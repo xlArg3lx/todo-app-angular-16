@@ -1,0 +1,87 @@
+{
+  "tasks": [
+    {
+      "id": "1",
+      "title": "Desarrollar la UI de la aplicación",
+      "description": "Crear la interfaz de usuario utilizando Angular y Bootstrap",
+      "status": "pending",
+      "deadline": "2024-09-30",
+      "people": [
+        {
+          "id": 1,
+          "fullName": "Juan Pérez",
+          "age": 30,
+          "skills": [
+            "Angular",
+            "TypeScript",
+            "HTML"
+          ]
+        },
+        {
+          "id": 2,
+          "fullName": "María Rodríguez",
+          "age": 25,
+          "skills": [
+            "CSS",
+            "JavaScript",
+            "Bootstrap"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "title": "Configurar el backend",
+      "description": "Implementar la API REST usando Node.js",
+      "status": "completed",
+      "deadline": "2024-09-30",
+      "people": [
+        {
+          "id": 3,
+          "fullName": "Carlos García",
+          "age": 35,
+          "skills": [
+            "Node.js",
+            "Express",
+            "MongoDB"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "title": "Crear el sistema de autenticación",
+      "description": "Implementar autenticación con JWT",
+      "status": "pending",
+      "deadline": "2024-09-30",
+      "people": [
+        {
+          "id": 3,
+          "fullName": "Carlos García",
+          "age": 35,
+          "skills": [
+            "Node.js",
+            "Express",
+            "MongoDB"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "3471",
+      "title": "Realizar CRUD TASK",
+      "description": "Prueba descripción",
+      "people": [
+        {
+          "fullName": "Argenedis Andres Alvarez Cueto",
+          "age": 25,
+          "skills": [
+            "Nest.js"
+          ]
+        }
+      ],
+      "deadline": "2024-09-30",
+      "status": "pending"
+    }
+  ]
+}

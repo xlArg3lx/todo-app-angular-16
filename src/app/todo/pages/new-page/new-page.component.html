@@ -1,0 +1,209 @@
+<!-- Modal para añadir tarea -->
+<ng-template #taskModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Añadir Nueva Tarea</h5>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss()"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+      <!-- Título de la Tarea -->
+      <div class="mb-3">
+        <label for="title" class="form-label">Título de la Tarea</label>
+        <input
+          id="title"
+          type="text"
+          formControlName="title"
+          class="form-control"
+        />
+        <div
+          *ngIf="
+            taskForm.get('title')?.invalid &&
+            (taskForm.get('title')?.touched || taskForm.get('title')?.dirty)
+          "
+          class="text-danger"
+        >
+          Título es requerido y debe tener al menos 3 caracteres.
+        </div>
+      </div>
+
+      <!-- Fecha Límite -->
+      <div class="mb-3">
+        <label for="deadline" class="form-label">Fecha Límite</label>
+        <input
+          id="deadline"
+          type="date"
+          formControlName="deadline"
+          class="form-control"
+        />
+        <div
+          *ngIf="
+            taskForm.get('deadline')?.invalid &&
+            (taskForm.get('deadline')?.touched ||
+              taskForm.get('deadline')?.dirty)
+          "
+          class="text-danger"
+        >
+          <div *ngIf="taskForm.get('deadline')?.errors?.['required']">
+            Fecha límite es requerida.
+          </div>
+          <div *ngIf="taskForm.get('deadline')?.errors?.['dateInPast']">
+            La fecha límite no puede ser en el pasado.
+          </div>
+        </div>
+      </div>
+
+      <!-- Descripción -->
+      <div class="mb-3">
+        <label for="description" class="form-label">Descripción</label>
+        <textarea
+          id="description"
+          formControlName="description"
+          class="form-control"
+        ></textarea>
+        <div
+          *ngIf="
+            taskForm.get('description')?.invalid &&
+            (taskForm.get('description')?.touched ||
+              taskForm.get('description')?.dirty)
+          "
+          class="text-danger"
+        >
+          Descripción es requerida.
+        </div>
+      </div>
+
+      <!-- Personas -->
+      <div formArrayName="people" class="mb-3">
+        <div
+          *ngFor="let person of people.controls; let i = index"
+          [formGroupName]="i"
+          class="card mb-3"
+        >
+          <div class="card-body">
+            <h5>Persona {{ i + 1 }}</h5>
+
+            <!-- Nombre Completo -->
+            <div class="mb-3">
+              <label for="fullName-{{ i }}" class="form-label"
+                >Nombre Completo</label
+              >
+              <input
+                id="fullName-{{ i }}"
+                type="text"
+                formControlName="fullName"
+                class="form-control"
+              />
+              <div
+                *ngIf="
+                  person.get('fullName')?.invalid &&
+                  (person.get('fullName')?.touched ||
+                    person.get('fullName')?.dirty)
+                "
+                class="text-danger"
+              >
+                Nombre completo es requerido y debe tener al menos 5 caracteres.
+              </div>
+              <div
+                *ngIf="taskForm.get('people')?.errors?.['notUnique']"
+                class="text-danger"
+              >
+                Los nombres completos deben ser únicos.
+              </div>
+            </div>
+
+            <!-- Edad -->
+            <div class="mb-3">
+              <label for="age-{{ i }}" class="form-label">Edad</label>
+              <input
+                id="age-{{ i }}"
+                type="number"
+                formControlName="age"
+                class="form-control"
+              />
+              <div
+                *ngIf="
+                  person.get('age')?.invalid &&
+                  (person.get('age')?.touched || person.get('age')?.dirty)
+                "
+                class="text-danger"
+              >
+                Edad es requerida y debe ser mayor de 18 años.
+              </div>
+            </div>
+
+            <!-- Habilidades -->
+            <div formArrayName="skills" class="mb-3">
+              <h6>Habilidades</h6>
+              <div
+                *ngFor="let skill of getSkills(i).controls; let j = index"
+                class="input-group mb-2"
+              >
+                <input [formControlName]="j" type="text" class="form-control" />
+                <button
+                  type="button"
+                  class="btn btn-outline-danger btn-sm"
+                  (click)="removeSkillFromPerson(i, j)"
+                >
+                  Eliminar
+                </button>
+                <div
+                  *ngIf="skill.invalid && (skill.touched || skill.dirty)"
+                  class="text-danger mt-2"
+                >
+                  &nbsp; Habilidad es requerida.
+                </div>
+              </div>
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-sm"
+                (click)="addSkillToPerson(i)"
+              >
+                Añadir Habilidad
+              </button>
+            </div>
+
+            <!-- Botón para Eliminar Persona -->
+            <button
+              type="button"
+              class="btn btn-outline-danger mt-2"
+              (click)="removePerson(i)"
+            >
+              Eliminar Persona
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón para Añadir Persona -->
+      <button
+        type="button"
+        class="btn btn-outline-success mb-3"
+        (click)="addPerson()"
+      >
+        Añadir Persona
+      </button>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      (click)="modal.dismiss()"
+    >
+      Cancelar
+    </button>
+    <button type="submit" class="btn btn-outline-primary" (click)="onSubmit()">
+      Guardar Tarea
+    </button>
+  </div>
+</ng-template>
+
+<!-- Botón para abrir el modal desde el componente que lista las tareas -->
+<button class="btn btn-outline-primary mb-4" (click)="openTaskModal(taskModal)">
+  Añadir Nueva Tarea
+</button>
